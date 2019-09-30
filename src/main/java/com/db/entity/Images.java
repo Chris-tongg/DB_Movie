@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Data
-public class images {
+public class Images {
     private Integer iId;
     private Integer fId;
     private Integer iImg;
