@@ -11,5 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/CollectionController")
-public class CollectionController {
+public class CollectController {
+
 }

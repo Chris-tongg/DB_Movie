@@ -14,17 +14,17 @@ import java.util.Date;
  */
 @Component
 @Data
-public class Collection {
+public class Collect {
     private Integer cId;
     private Integer uId;
     private Integer fId;
     private Date cDate;
     private Integer isDelete;
 
-    public Collection() {
+    public Collect() {
     }
 
-    public Collection(Integer cId, Integer uId, Integer fId, Date cDate, Integer isDelete) {
+    public Collect(Integer cId, Integer uId, Integer fId, Date cDate, Integer isDelete) {
         this.cId = cId;
         this.uId = uId;
         this.fId = fId;
