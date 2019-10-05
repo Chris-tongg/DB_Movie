@@ -24,15 +24,96 @@
     <!--5.中文校验-->
     <script src="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/js/language/zh_CN.js"></script>
     <script type="text/javascript">
+        //按钮函数
+        function btn1() {
+            var chooseAll = document.getElementsByName("chooseAll")[0];
+            var choose = document.getElementsByName("choose");
+            for (var i = 0;i<choose.length;i++){
+                if (chooseAll.checked){
+                    choose[i].checked = true;
+                }else{
+                    choose[i].checked = false;
+                }
+            }
+        }
+        function btn2() {
+            var chooseAll = document.getElementsByName("chooseAll")[0];
+            var choose = document.getElementsByName("choose");
+            for (var i = 0; i < choose.length; i++) {
+                if (choose[i].checked == false) {
+                    chooseAll.checked = false;
+                }
+            }
+        }
+        //用来存储获取到的当前页数
+        var page = 1;
+        var pageCount;
+        //登录后获取页面数据
+        $(function () {
+            var data = {
+                currentPage: page
+            };
+            $.get("http://localhost:8080/DB_Movie_war_exploded/FilmController/getList",data,function (data) {
+                pageCount=data.pageCount;
+                for (var i=0;i<data.list.length;i++){
+                    $("#list").append(
+                        "<div class='col-xs-4'>"+"<input type=\"checkbox\" name=\"choose\" onclick=\"btn2()\" value='"+data.list[i].id+"'>"+
+                        data.list[i].fId+"."+data.list[i].fName+"<br/>"+"<img style='width: 200px;height: 200px;' src='asserts/images/"+data.list[i].fImg+"' class='img-thumbnail'>"+"<br/>"+
+                        "简介："+data.list[i].fIntro+"<br/>"+"类型："+data.list[i].fType+"<br/>"+
+                        "<a href='#' id='"+data.list[i].id+"' class='update' onclick='update(this)'>"+"编辑"+"</a>"+"/"+
+                        "<a href='#' id='"+data.list[i].id+"' class='delete' onclick='del(this)'>"+"删除"+"</a>"+
+                        "</div>"
+                    )
+                }
+            })
+        })
         //获取mf按钮，即管理影片按钮，获取所有影片
         $(function () {
             $("#mf").click(function () {
-
+                $("li:lt(3)").removeAttr("class");
+                $("li:eq(0)").attr("class","active");
+                var data = {
+                    currentPage: page
+                };
+                $.get("http://localhost:8080/DB_Movie_war_exploded/FilmController/getList",data,function (data) {
+                    $("#list").html("");
+                    pageCount=data.pageCount;
+                    for (var i=0;i<data.list.length;i++){
+                        $("#list").append(
+                            "<div class='col-xs-4'>"+"<input type=\"checkbox\" name=\"choose\" onclick=\"btn2()\" value='"+data.list[i].id+"'>"+
+                            data.list[i].fId+"."+data.list[i].fName+"<br/>"+"<img style='width: 200px;height: 200px;' src='asserts/images/"+data.list[i].fImg+"' class='img-thumbnail'>"+"<br/>"+
+                            "简介："+data.list[i].fIntro+"<br/>"+"类型："+data.list[i].fType+"<br/>"+
+                            "<a href='#' id='"+data.list[i].fId+"' class='update' onclick='update(this)'>"+"编辑"+"</a>"+"/"+
+                            "<a href='#' id='"+data.list[i].fId+"' class='delete' onclick='del(this)'>"+"删除"+"</a>"+
+                            "</div>"
+                        )
+                    }
+                })
             })
         })
+        //获取mu按钮，即管理用户按钮，获取所有用户(未完善)
+        $(function () {
+            $("#mu").click(function () {
+                $("li:lt(3)").removeAttr("class");
+                $("li:eq(1)").attr("class","active");
+            })
+        })
+        //获取mp按钮，即管理影片照片，获取所有照片(未完善)
+        $(function () {
+            $("#mp").click(function () {
+                $("li:lt(3)").removeAttr("class");
+                $("li:eq(2)").attr("class","active");
+            })
+        })
+        //点击编辑按钮，跳转至编辑影片页面
+        function update(obj) {
+            var id = obj.fId;
+            location.href="manageFilm.html?id="+id+"\"";
+        }
     </script>
 </head>
 <body>
+<!--导航栏-->
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -50,9 +131,9 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
 <!--                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>-->
-                <li class="active" id="mf"><a href="#">管理影片<span class="sr-only">(current)</span></a></li>
-                <li><a href="#">管理用户</a></li>
-                <li><a href="#">审核照片</a></li>
+                <li class="active"><a href="#" id="mf">管理影片<span class="sr-only">(current)</span></a></li>
+                <li><a href="#" id="mu">管理用户</a></li>
+                <li><a href="#" id="mp">审核照片</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">分 类<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -81,6 +162,19 @@
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
+
+    <!--展示列表-->
+    <div class="row">
+        <div class="container" id="list" >
+
+        </div>
+        <div class="btn-group" role="group" aria-label="..." style="position: absolute;left: 40%">
+            <button type="button" class="btn btn-default" id="first">首页</button>
+            <button type="button" class="btn btn-default" id="last">上一页</button>
+            <button type="button" class="btn btn-default" id="next">下一页</button>
+            <button type="button" class="btn btn-default" id="final">尾页</button>
+        </div>
+    </div>
 </nav>
 </body>
 </html>

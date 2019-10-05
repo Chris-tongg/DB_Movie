@@ -42,4 +42,7 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <!--使用默认的servlet来相应静态文件,使前端保留样式-->
+    <mvc:default-servlet-handler/>
+
 </beans>

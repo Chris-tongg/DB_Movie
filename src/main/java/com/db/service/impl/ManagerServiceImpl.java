@@ -1,6 +1,7 @@
 package com.db.service.impl;
 
 import com.db.entity.Film;
+import com.db.entity.Page;
 import com.db.mapper.IManagerMapper;
 import com.db.service.IManagerService;
 import org.springframework.stereotype.Service;

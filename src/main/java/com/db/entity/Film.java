@@ -15,12 +15,22 @@ import org.springframework.stereotype.Component;
 @Data
 public class Film {
     private Integer fId;
+    private String fName;
     private String fImg;
     private String fIntro;
     private String fType;
     private Integer isDelete;
 
     public Film() {
+    }
+
+    public Film(Integer fId, String fName, String fImg, String fIntro, String fType, Integer isDelete) {
+        this.fId = fId;
+        this.fName = fName;
+        this.fImg = fImg;
+        this.fIntro = fIntro;
+        this.fType = fType;
+        this.isDelete = isDelete;
     }
 
     public Film(Integer fId, String fImg, String fIntro, String fType, Integer isDelete) {
