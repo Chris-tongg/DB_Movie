@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.db.mapper.IDissMapper">
+    <resultMap id="dissMap" type="Diss">
+        <id property="dId" column="d_id"/>
+        <result property="uId" column="u_id"></result>
+        <result property="fId" column="f_id"></result>
+        <result property="dContext" column="d_context"></result>
+        <result property="dDate" column="d_date"></result>
+        <result property="isDelete" column="is_delete"></result>
+    </resultMap>
+    <!--获取评论-->
+    <select id="getDissById" resultMap="dissMap">
+        select * from diss where f_id=#{fId2} order by d_date desc;
+    </select>
+    <!--发表评论-->
+    <insert id="addDiss">
+        insert into diss(u_id,f_id,d_context) values (#{uId1},#{fId1},#{dContext1});
+    </insert>
+</mapper>

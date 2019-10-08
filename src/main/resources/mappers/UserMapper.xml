@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.db.mapper.IUserMapper">
+    <resultMap id="userMap" type="User">
+        <id property="uId" column="u_id"/>
+        <result property="uName" column="u_name"></result>
+        <result property="uPassword" column="u_password"></result>
+        <result property="uPhone" column="u_phone"></result>
+        <result property="uHobby" column="u_hobby"></result>
+        <result property="uEmail" column="u_email"></result>
+        <result property="uIntro" column="u_intro"></result>
+        <result property="uRequest" column="u_request"></result>
+        <result property="isDelete" column="is_delete"></result>
+    </resultMap>
+    <!--收藏-->
+    <insert id="addCollect">
+        insert into collect(u_id,f_id) values(#{uId1},#{fId1});
+    </insert>
+</mapper>

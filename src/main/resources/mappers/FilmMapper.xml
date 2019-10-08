@@ -14,8 +14,20 @@
     <select id="getTotalCount" resultType="Integer">
         select count(1) from film where is_delete=1;
     </select>
-    <!--获取展示页面-->
+    <!--获取分页展示页面-->
     <select id="getList" resultMap="filmMap">
         select * from film where is_delete=1 limit #{offset},#{pageSize};
+    </select>
+    <!--通过id获取影片详细信息-->
+    <select id="getFilmById" resultMap="filmMap">
+        select * from film where f_id=#{fId1};
+    </select>
+    <!--获取所有数据-->
+    <select id="getAll" resultMap="filmMap">
+        select * from film where is_delete=1;
+    </select>
+    <!--搜索影片-->
+    <select id="getFilm" resultMap="filmMap">
+        select * from film where f_name like #{fContext1} and is_delete=1;
     </select>
 </mapper>

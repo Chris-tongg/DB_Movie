@@ -18,7 +18,7 @@ public class PageServiceImpl implements IPageService {
         //1.设置当前页数
         page.setCurrentPage(Integer.parseInt(currentPage));
         //2.设置每页行数
-        page.setPageSize(3);
+        page.setPageSize(12);
         //3.设置总行数
         page.setTotalCount(filmMapper.getTotalCount());
         //4.总页数--分装到Page实体类的构造方法和set方法中

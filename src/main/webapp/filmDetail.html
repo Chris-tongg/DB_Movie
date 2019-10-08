@@ -23,8 +23,168 @@
     <script src="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.js"></script>
     <!--5.中文校验-->
     <script src="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/js/language/zh_CN.js"></script>
+    <script type="text/javascript">
+        //获取url中的id
+        var fId = $(location).attr('href').split('?')[1].split('=')[1];
+        //影片信息回显
+        $(function () {
+            var data={
+                fId:fId
+            };
+            $.ajax({
+                url:"http://localhost:8080/DB_Movie_war_exploded/FilmController/getFilmById",
+                type:"Get",
+                data:data,
+                success:function (data) {
+                    $("#filmName").html(data.fName);
+                    $("img:eq(0)").attr("src","asserts/images/"+data.fImg);
+                    $("#intro").html(data.fIntro);
+                    $("#type").html(data.fType);
+                }
+            })
+        })
+        //收藏功能
+        $("#collect").click(function () {
+            var data = {
+                fId:fId,
+                uId:1,
+            };
+            $.ajax({
+                url:"http://localhost:8080/DB_Movie_war_exploded/UserController/addCollect",
+                type:"Get",
+                data:data,
+                success:function (data) {
+                    alert("收藏成功")
+                }
+            })
+        })
+        //展示评论
+        $(function () {
+            var data={
+                fId:fId
+            };
+            $.ajax({
+                url:"http://localhost:8080/DB_Movie_war_exploded/DissController/getDissById",
+                type:"Get",
+                data:data,
+                success:function (data) {
+                    for (var i=0;i<data.length;i++) {
+                        $("#diss").append(
+                            "<div class='col-xs-4'>"+
+                                data[i].uId+":"+data[i].dContext+"  "+data[i].dDate+"<br/>"+
+                            "</div>"
+                        )
+                    }
+                }
+            })
+        })
+        //发表评论
+        $("#comment").click(function () {
+            var data={
+                dContext:$("#dContext").val(),
+                fId:fId,
+                uId:1
+            };
+            $.ajax({
+                url:"http://localhost:8080/DB_Movie_war_exploded/DissController/addDiss",
+                type:"Get",
+                data:data,
+                success:function (data) {
+                    alert("评论成功");
+                    location.href="filmDetail.html?fId="+fId;
+                }
+            })
+        })
+        //上传照片
+        $("#upload").click(function () {
+            var data={
+
+            }
+        })
+    </script>
 </head>
 <body>
+    <div class="page-header">
+        <h1>&nbsp;&nbsp;&nbsp;&nbsp; 豆 哔 影 片 <small>Subtext for header</small></h1>
+    </div>
+    <!--影片详情-->
+    <div class="container">
+        <div class="col-md-8">
+            <h2 id="filmName"></h2>
+        </div>
+    </div>
+    <br/>
+    <div class="container">
+        <div class="col-md-6">
+            <img src="" style="width: 200px;height: 200px;" class='img-thumbnail'>
+            <div class="related-info">
+                <a name="intro"></a>
+
+                <h3>
+                    <i class="">简介</i>
+                    · · · · · ·
+                </h3>
+                <div class="indent" id="link-report">
+                        <span property="v:summary" class="" id="intro">
+                                　　
+                                    <br>
+                        </span>
+                </div>
+
+                <h3>
+                    <i class="">类型</i>
+                </h3>
+                <div>
+                    <span property="v:summary" class="" id="type">
+                                　　
+                                    <br>
+                        </span>
+                </div>
+
+                <div>
+                    <a id="collect" href="#" class="text-danger">收藏<svg style="width: 13px;height: 13px;" t="1570259745733" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1740" width="200" height="200"><path d="M667.79 117.333c165.075 0 270.877 132.366 270.877 310.533 0 138.248-125.103 290.506-371.57 461.583-33.074 22.957-77.12 22.957-110.194 0-246.467-171.077-371.57-323.335-371.57-461.583 0-178.167 105.802-310.533 270.878-310.533 59.613 0 100.05 20.834 155.789 68.098 55.739-47.264 96.176-68.098 155.79-68.098z m0 63.147c-41.44 0-70.264 15.191-116.962 55.036-2.169 1.85-14.401 12.368-17.948 15.381-12.002 10.197-29.758 10.197-41.76 0-3.547-3.013-15.78-13.53-17.948-15.381-46.698-39.845-75.521-55.036-116.961-55.036-126.016 0-206.878 100.783-206.878 246.217 0 110.906 113.52 248.547 344.301 408.133 11.025 7.623 25.707 7.623 36.732 0 230.78-159.586 344.3-297.227 344.3-408.133 0-145.434-80.86-246.217-206.877-246.217z" fill="#000000" p-id="1741"></path></svg></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--评论-->
+    <div class="container">
+        <div class="col-md-6">
+            <div class="related-info">
+                <h3>
+                    <i class="">更多照片(<span><a href="#" id="upload">上传</a></span>)</i>
+                    · · · · · ·
+                </h3>
+
+
+
+            </div>
+        </div>
+    </div>
+    <!--评论-->
+    <div class="container">
+        <div class="col-md-6">
+            <div class="related-info">
+                <h3>
+                    <i class="">评论</i>
+                    · · · · · ·
+                </h3>
+
+                <!--发表评论-->
+                <textarea style="border-radius: 5%;resize:none" id="dContext"></textarea>
+                <!-- Contextual button for informational alert messages -->
+                <button type="button" class="btn btn-info" id="comment">评 论</button>
+
+                <!--展示评论-->
+                <div id="diss">
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

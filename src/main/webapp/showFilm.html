@@ -58,7 +58,7 @@
                 for (var i=0;i<data.list.length;i++){
                     $("#list").append(
                         "<div class='col-xs-4'>"+"<input type=\"checkbox\" name=\"choose\" onclick=\"btn2()\" value='"+data.list[i].id+"'>"+
-                        data.list[i].fId+"."+data.list[i].fName+"<br/>"+"<img style='width: 200px;height: 200px;' src='asserts/images/"+data.list[i].fImg+"' class='img-thumbnail'>"+"<br/>"+
+                        data.list[i].fId+"."+data.list[i].fName+"<br/>"+
                         "简介："+data.list[i].fIntro+"<br/>"+"类型："+data.list[i].fType+"<br/>"+
                         "<a href='#' id='"+data.list[i].id+"' class='update' onclick='update(this)'>"+"编辑"+"</a>"+"/"+
                         "<a href='#' id='"+data.list[i].id+"' class='delete' onclick='del(this)'>"+"删除"+"</a>"+
@@ -73,18 +73,16 @@
                 $("li:lt(3)").removeAttr("class");
                 $("li:eq(0)").attr("class","active");
                 var data = {
-                    currentPage: page
                 };
-                $.get("http://localhost:8080/DB_Movie_war_exploded/FilmController/getList",data,function (data) {
+                $.get("http://localhost:8080/DB_Movie_war_exploded/FilmController/getAll",data,function (data) {
                     $("#list").html("");
-                    pageCount=data.pageCount;
-                    for (var i=0;i<data.list.length;i++){
+                    for (var i=0;i<data.length;i++){
                         $("#list").append(
-                            "<div class='col-xs-4'>"+"<input type=\"checkbox\" name=\"choose\" onclick=\"btn2()\" value='"+data.list[i].id+"'>"+
-                            data.list[i].fId+"."+data.list[i].fName+"<br/>"+"<img style='width: 200px;height: 200px;' src='asserts/images/"+data.list[i].fImg+"' class='img-thumbnail'>"+"<br/>"+
-                            "简介："+data.list[i].fIntro+"<br/>"+"类型："+data.list[i].fType+"<br/>"+
-                            "<a href='#' id='"+data.list[i].fId+"' class='update' onclick='update(this)'>"+"编辑"+"</a>"+"/"+
-                            "<a href='#' id='"+data.list[i].fId+"' class='delete' onclick='del(this)'>"+"删除"+"</a>"+
+                            "<div class='col-xs-4'>"+"<input type=\"checkbox\" name=\"choose\" onclick=\"btn2()\" value='"+data[i].fId+"'>"+
+                            data[i].fId+"."+data[i].fName+"<br/>"+
+                            "简介："+data[i].fIntro+"<br/>"+"类型："+data[i].fType+"<br/>"+
+                            "<a href='#' id='"+data[i].fId+"' class='update' onclick='update(this)'>"+"编辑"+"</a>"+"/"+
+                            "<a href='#' id='"+data[i].fId+"' class='delete' onclick='del(this)'>"+"删除"+"</a>"+
                             "</div>"
                         )
                     }
@@ -107,9 +105,34 @@
         })
         //点击编辑按钮，跳转至编辑影片页面
         function update(obj) {
-            var id = obj.fId;
-            location.href="manageFilm.html?id="+id+"\"";
+            var fid = obj.fId;
+            location.href="manageFilm.html?id="+fid+"\"";
         }
+        //搜索影片
+        $("#findFilm").click(function () {
+            var data={
+                fContext:$("#fContext").val()
+            };
+            $.ajax({
+                url:"http://localhost:8080/DB_Movie_war_exploded/FilmController/getFilm",
+                type:"Get",
+                data:data,
+                success:function (data) {
+                    alert(data)
+                    $("#list").html("");
+                    for (var i=0;i<data.length;i++){
+                        $("#list").append(
+                            "<div class='col-xs-4'>"+"<input type=\"checkbox\" name=\"choose\" onclick=\"btn2()\" value='"+data[i].fId+"'>"+
+                            data[i].fId+"."+data[i].fName+"<br/>"+
+                            "简介："+data.list[i].fIntro+"<br/>"+"类型："+data[i].fType+"<br/>"+
+                            "<a href='#' id='"+data[i].fId+"' class='update' onclick='update(this)'>"+"编辑"+"</a>"+"/"+
+                            "<a href='#' id='"+data[i].fId+"' class='delete' onclick='del(this)'>"+"删除"+"</a>"+
+                            "</div>"
+                        )
+                    }
+                }
+            })
+        })
     </script>
 </head>
 <body>
@@ -134,25 +157,26 @@
                 <li class="active"><a href="#" id="mf">管理影片<span class="sr-only">(current)</span></a></li>
                 <li><a href="#" id="mu">管理用户</a></li>
                 <li><a href="#" id="mp">审核照片</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">分 类<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">科幻片</a></li>
-                        <li><a href="#">动作片</a></li>
-                        <li><a href="#">喜剧片</a></li>
-                        <li><a href="#">爱情片</a></li>
-                        <li><a href="#">恐怖片</a></li>
-                        <li><a href="#">动画片</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">其他...</a></li>
-                    </ul>
-                </li>
+<!--                <li class="dropdown">-->
+<!--                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">分 类<span class="caret"></span></a>-->
+<!--                    <ul class="dropdown-menu">-->
+<!--                        <li><a href="#">科幻片</a></li>-->
+<!--                        <li><a href="#">动作片</a></li>-->
+<!--                        <li><a href="#">喜剧片</a></li>-->
+<!--                        <li><a href="#">爱情片</a></li>-->
+<!--                        <li><a href="#">恐怖片</a></li>-->
+<!--                        <li><a href="#">动画片</a></li>-->
+<!--                        <li><a href="#">剧情片</a></li>-->
+<!--                        <li role="separator" class="divider"></li>-->
+<!--                        <li><a href="#">其他...</a></li>-->
+<!--                    </ul>-->
+<!--                </li>-->
             </ul>
             <form class="navbar-form navbar-left">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
+                    <input type="text" class="form-control" placeholder="Search" id="fContext">
                 </div>
-                <button type="submit" class="btn btn-default">搜 索</button>
+                <button type="button" class="btn btn-default" id="findFilm">搜 索</button>
             </form>
             <ul class="nav navbar-nav">
                 <li><a href="#">更多</a></li>
@@ -168,12 +192,7 @@
         <div class="container" id="list" >
 
         </div>
-        <div class="btn-group" role="group" aria-label="..." style="position: absolute;left: 40%">
-            <button type="button" class="btn btn-default" id="first">首页</button>
-            <button type="button" class="btn btn-default" id="last">上一页</button>
-            <button type="button" class="btn btn-default" id="next">下一页</button>
-            <button type="button" class="btn btn-default" id="final">尾页</button>
-        </div>
+
     </div>
 </nav>
 </body>

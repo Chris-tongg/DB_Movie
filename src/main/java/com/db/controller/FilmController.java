@@ -44,7 +44,30 @@ public class FilmController {
         Page page = pageService.getPage("1");
         log.debug("展示页面信息："+page);
         log.debug("page.list:"+page.getList());
-        System.out.println(page.getList());
         return page;
+    }
+
+    //通过id获取电影详细信息
+    @RequestMapping(value = "/getFilmById",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Film getFilmById(Integer fId){
+        Film film = filmService.getFilmById(fId);
+        System.out.println("影片："+film);
+        return film;
+    }
+
+    //获取所有影片
+    @RequestMapping(value = "/getAll",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<Film> getAll(){
+        List<Film> list = filmService.getAll();
+        return list;
+    }
+
+    //搜索影片
+    @RequestMapping(value = "/getFilm",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<Film> getFilm(String fContext){
+        String text = "%"+fContext+"%";
+        List<Film> list = filmService.getFilm(text);
+        System.out.println(list);
+        return list;
     }
 }

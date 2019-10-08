@@ -30,4 +30,25 @@ public class FilmServiceImpl implements IFilmService {
         List<Film> list = filmMapper.getList(offset, pageSize);
         return list;
     }
+
+    //通过id获取电影详细信息
+    @Override
+    public Film getFilmById(Integer fId) {
+        Film film = filmMapper.getFilmById(fId);
+        return film;
+    }
+
+    @Override
+    public List<Film> getAll() {
+        List<Film> list = filmMapper.getAll();
+        return list;
+    }
+
+    @Override
+    public List<Film> getFilm(String fContext) {
+        List<Film> list = filmMapper.getFilm(fContext);
+        return list;
+    }
+
+
 }
